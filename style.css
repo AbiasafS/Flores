@@ -4,10 +4,37 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  
+  /* Elimina el recuadro azul/gris al pulsar en móviles y la selección de texto accidental */
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+::selection {
+  background: transparent;
+  color: inherit;
+}
+
+::-moz-selection {
+  background: transparent;
+  color: inherit;
 }
 
 :root {
   --dark-color: #000;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: manipulation;
 }
 
 body {
@@ -15,8 +42,10 @@ body {
   align-items: flex-end;
   justify-content: center;
   min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   background-color: var(--dark-color);
-  overflow: hidden;
   perspective: 1000px;
 }
 
@@ -40,6 +69,7 @@ body {
 .flowers {
   position: relative;
   transform: scale(0.9);
+  transform-origin: bottom center;
 }
 
 .flower {
@@ -51,19 +81,50 @@ body {
 }
 
 .message {
-  background: #fce700;
-  bottom: 50px;
+  background: linear-gradient(135deg, #ffe600 0%, #fcdb00 100%);
+  color: #1a1500;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: "Poppins", sans-serif;
-  font-size: 40px;
+  font-size: 30px;
   font-style: normal;
-  font-weight: 800;
-  height: 60px;
-  line-height: 1;
-  padding: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  height: auto;
+  line-height: 1.3;
+  padding: 14px 34px;
   position: absolute;
   opacity: 0; /* El elemento empieza invisible */
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(252, 231, 0, 0.4), 0 0 35px rgba(252, 231, 0, 0.2);
+  cursor: pointer;
+  z-index: 100;
+  width: max-content;
+  max-width: 90%;
+  text-align: center;
+  white-space: normal;
+  outline: none !important;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 0.25s ease;
   animation: fadeIn 1s forwards;
-  animation-delay: 2s; /* El elemento aparecerá después de 60 segundos */
+  animation-delay: 2s; /* El elemento aparecerá después de 2 segundos */
+}
+
+.message:hover {
+  box-shadow: 0 8px 30px rgba(252, 231, 0, 0.7), 0 0 50px rgba(252, 231, 0, 0.3);
+  transform: translateX(-50%) translateY(-4px) scale(1.02);
+}
+
+.message:active {
+  box-shadow: 0 2px 12px rgba(252, 231, 0, 0.6);
+  transform: translateX(-50%) scale(0.97);
+  outline: none !important;
+}
+
+.message:focus,
+.message:focus-visible {
+  outline: none !important;
 }
 
 @keyframes fadeIn {
@@ -1371,3 +1432,167 @@ body {
   -webkit-animation-play-state: paused !important;
           animation-play-state: paused !important;
 }/*# sourceMappingURL=main.css.map */
+
+
+/* --- ESTILOS DEL BOTÓN DE INICIO --- */
+.btn-start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 36px;
+  font-size: 20px;
+  background: linear-gradient(135deg, #ffe600 0%, #fcdb00 100%);
+  color: #1a1500;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 25px rgba(252, 231, 0, 0.6), 0 0 50px rgba(252, 231, 0, 0.25);
+  z-index: 2000;
+  white-space: nowrap;
+  max-width: 90%;
+  text-align: center;
+  outline: none !important;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 0.25s ease, 
+              opacity 0.5s ease;
+  
+  /* Eliminar destellos azules al tocar en móviles */
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+.btn-start:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+  box-shadow: 0 0 35px rgba(252, 231, 0, 0.8), 0 0 70px rgba(252, 231, 0, 0.4);
+}
+
+.btn-start:active {
+  transform: translate(-50%, -50%) scale(0.95);
+  outline: none !important;
+}
+
+.btn-start:focus,
+.btn-start:focus-visible {
+  outline: none !important;
+}
+
+/* Clase para ocultar el botón suavemente */
+.btn-start.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- ANIMACIÓN PARA EL CLIC (LUCIÉRNAGAS) --- */
+.firefly-click {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #fce700;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #fce700, 0 0 20px #fce700, 0 0 30px #ffffff;
+  pointer-events: none; /* Para que no interfiera con otros clics */
+  z-index: 1000;
+  animation: float-up-fade 2s ease-out forwards;
+}
+
+@keyframes float-up-fade {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* --- ESTILOS DE LOS PÉTALOS INFINITOS --- */
+.petal {
+  position: absolute;
+  top: -20px;
+  background-color: #fce700;
+  /* Esta forma simula un pétalo con esquinas redondeadas opuestas */
+  border-radius: 15% 85% 15% 85%; 
+  box-shadow: 0 0 5px rgba(252, 231, 0, 0.5);
+  pointer-events: none;
+  z-index: 5;
+  animation: fall linear infinite forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0vh) rotate(0deg) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(115vh) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ==============================================
+   ADAPTACIÓN RESPONSIVA PARA DISPOSITIVOS MÓVILES
+   ============================================== */
+@media (max-width: 768px) {
+  .flowers {
+    /* Escala y posición óptimas para teléfonos móviles */
+    transform: scale(0.85); 
+    transform-origin: bottom center;
+    bottom: max(14vh, 105px);
+  }
+  
+  .message {
+    font-size: clamp(16px, 4.2vw, 20px);
+    width: max-content;
+    max-width: 88%;
+    text-align: center;
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    height: auto;
+    padding: 12px 26px;
+    border-radius: 50px;
+    box-shadow: 0 4px 18px rgba(252, 231, 0, 0.4);
+  }
+
+  .btn-start {
+    font-size: clamp(17px, 4.8vw, 20px);
+    padding: 14px 30px;
+  }
+}
+
+/* Pantallas pequeñas (ej. teléfonos de 360px o menos) */
+@media (max-width: 380px) {
+  .flowers {
+    transform: scale(0.78);
+    bottom: max(14vh, 95px);
+  }
+  
+  .message {
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+
+  .btn-start {
+    font-size: 16px;
+    padding: 12px 24px;
+  }
+}
+
+/* Teléfonos de poca altura o en modo apaisado */
+@media (max-height: 700px) and (max-width: 768px) {
+  .flowers {
+    transform: scale(0.72);
+    bottom: max(12vh, 85px);
+  }
+
+  .message {
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+}
