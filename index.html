@@ -10,12 +10,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="container">
-  <!-- Agrega este botón justo al principio del body -->
   <button id="btn-start" class="btn-start">Haz algo mágico ✨</button>
-
+  <div id="scroll-hint" class="scroll-hint">🌍 Desliza o usa la rueda para explorar el planeta 🌸</div>
   <div class="night"></div>
-  <!-- ... Todo el resto de tus flores ... -->
-  <div class="flowers">
+
+  <!-- Escenario del planeta con flores infinitas -->
+  <div class="planet-viewport" id="planet-viewport">
+    <div class="planet-curve-line"></div>
+    <div class="garden-layer garden-layer--bg" id="layer-bg"></div>
+    <div class="garden-layer garden-layer--mid" id="layer-mid"></div>
+    <div class="garden-layer garden-layer--fg" id="layer-fg">
+      <div class="flowers" id="main-bouquet">
     <div class="flower flower--1">
       <div class="flower__leafs flower__leafs--1">
         <div class="flower__leaf flower__leaf--1"></div>
@@ -41,6 +46,8 @@
         <div class="flower__line__leaf flower__line__leaf--4"></div>
         <div class="flower__line__leaf flower__line__leaf--5"></div>
         <div class="flower__line__leaf flower__line__leaf--6"></div>
+        <div class="flower__line__leaf flower__line__leaf--7"></div>
+        <div class="flower__line__leaf flower__line__leaf--8"></div>
       </div>
     </div>
 
@@ -67,6 +74,10 @@
         <div class="flower__line__leaf flower__line__leaf--2"></div>
         <div class="flower__line__leaf flower__line__leaf--3"></div>
         <div class="flower__line__leaf flower__line__leaf--4"></div>
+        <div class="flower__line__leaf flower__line__leaf--5"></div>
+        <div class="flower__line__leaf flower__line__leaf--6"></div>
+        <div class="flower__line__leaf flower__line__leaf--7"></div>
+        <div class="flower__line__leaf flower__line__leaf--8"></div>
       </div>
     </div>
 
@@ -93,6 +104,10 @@
         <div class="flower__line__leaf flower__line__leaf--2"></div>
         <div class="flower__line__leaf flower__line__leaf--3"></div>
         <div class="flower__line__leaf flower__line__leaf--4"></div>
+        <div class="flower__line__leaf flower__line__leaf--5"></div>
+        <div class="flower__line__leaf flower__line__leaf--6"></div>
+        <div class="flower__line__leaf flower__line__leaf--7"></div>
+        <div class="flower__line__leaf flower__line__leaf--8"></div>
       </div>
     </div>
 
@@ -310,9 +325,26 @@
         <div class="leaf leaf--3"></div>
       </div>
     </div>
+      </div>
+    </div>
   </div>
-  <div class="message">Estas flores amarillas son para ti</div>
+  <button class="message" id="message-btn" aria-label="Reproducir música y recorrido cinemático">
+    <span class="music-icon" id="music-indicator">🎵</span>
+    <span id="message-text">Estas flores amarillas son para ti</span>
+    <span class="sparkle-badge">✨</span>
+  </button>
+  <audio id="bg-audio" preload="auto" loop></audio>
 
+  <!-- Contenedor para reproductor si se usa enlace de Spotify -->
+  <div id="spotify-player-container" class="spotify-container hidden"></div>
+
+  <!-- Contenedor para la API de YouTube (dentro del viewport con opacidad mínima para permitir reproducción) -->
+  <div id="yt-player-container" style="position:fixed; bottom:0; right:0; width:200px; height:200px; opacity:0.001; pointer-events:none; z-index:-10;">
+    <div id="yt-player"></div>
+  </div>
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script src="main.js"></script>
 </body>
 </html>

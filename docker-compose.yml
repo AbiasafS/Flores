@@ -1,0 +1,7 @@
+services:
+  flores:
+    build: .
+    container_name: flores-amarillas
+    restart: unless-stopped
+    ports:
+      - "8085:80"

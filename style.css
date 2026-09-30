@@ -35,6 +35,7 @@ body {
   height: 100%;
   overflow: hidden;
   touch-action: manipulation;
+  touch-action: none;
 }
 
 body {
@@ -67,9 +68,13 @@ body {
 }
 
 .flowers {
-  position: relative;
-  transform: scale(0.9);
+  position: absolute;
+  bottom: 12vh;
+  left: 0;
+  width: 0;
+  height: 0;
   transform-origin: bottom center;
+  will-change: transform;
 }
 
 .flower {
@@ -81,13 +86,17 @@ body {
 }
 
 .message {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background: linear-gradient(135deg, #ffe600 0%, #fcdb00 100%);
   color: #1a1500;
   bottom: 45px;
   left: 50%;
   transform: translateX(-50%);
   font-family: "Poppins", sans-serif;
-  font-size: 30px;
+  font-size: 24px;
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -97,6 +106,7 @@ body {
   position: absolute;
   opacity: 0; /* El elemento empieza invisible */
   border-radius: 50px;
+  border: none;
   box-shadow: 0 4px 20px rgba(252, 231, 0, 0.4), 0 0 35px rgba(252, 231, 0, 0.2);
   cursor: pointer;
   z-index: 100;
@@ -106,9 +116,12 @@ body {
   white-space: normal;
   outline: none !important;
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-              box-shadow 0.25s ease;
+              box-shadow 0.25s ease, background 0.3s ease;
   animation: fadeIn 1s forwards;
   animation-delay: 2s; /* El elemento aparecerá después de 2 segundos */
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 .message:hover {
@@ -120,6 +133,87 @@ body {
   box-shadow: 0 2px 12px rgba(252, 231, 0, 0.6);
   transform: translateX(-50%) scale(0.97);
   outline: none !important;
+}
+
+.message.active {
+  background: linear-gradient(135deg, #fff269 0%, #ffc400 100%);
+  animation: pulse-message 2s infinite alternate;
+}
+
+@keyframes pulse-message {
+  0% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 4px 20px rgba(252, 231, 0, 0.6), 0 0 35px rgba(252, 231, 0, 0.3);
+  }
+  100% {
+    transform: translateX(-50%) scale(1.04);
+    box-shadow: 0 8px 34px rgba(252, 231, 0, 0.95), 0 0 65px rgba(252, 231, 0, 0.6);
+  }
+}
+
+.music-icon {
+  font-size: 1.15em;
+  display: inline-block;
+  animation: musicBounce 1.4s infinite ease-in-out alternate;
+}
+
+.sparkle-badge {
+  font-size: 1.1em;
+}
+
+@keyframes musicBounce {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-3px) rotate(8deg); }
+  100% { transform: translateY(0) rotate(-6deg); }
+}
+
+.heart-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999999 !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  animation: floatHeart 1.7s cubic-bezier(0.25, 0.9, 0.3, 1) forwards;
+  will-change: transform, opacity;
+  line-height: 1;
+}
+
+@keyframes floatHeart {
+  0% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) scale(0.3);
+  }
+  15% {
+    opacity: 1;
+    transform: translate3d(-50%, -50%, 0) translate3d(calc(var(--tx) * 0.35), calc(var(--ty) * 0.35), 0) scale(1.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) translate3d(var(--tx), var(--ty), 0) scale(0.85);
+  }
+}
+
+/* Contenedor flotante y estético para Spotify si se usa enlace de Spotify */
+.spotify-container {
+  position: fixed;
+  bottom: 115px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90%, 380px);
+  height: 80px;
+  z-index: 120;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(252, 231, 0, 0.25);
+  border: 1px solid rgba(252, 231, 0, 0.4);
+  background: rgba(10, 20, 12, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.spotify-container.hidden {
+  display: none;
 }
 
 .message:focus,
@@ -166,6 +260,14 @@ body {
   -webkit-animation: blooming-leaf-left var(--fl-speed) 2s backwards;
           animation: blooming-leaf-left var(--fl-speed) 2s backwards;
 }
+.flower--1 .flower__line__leaf--7 {
+  -webkit-animation: blooming-leaf-right var(--fl-speed) 2.2s backwards;
+          animation: blooming-leaf-right var(--fl-speed) 2.2s backwards;
+}
+.flower--1 .flower__line__leaf--8 {
+  -webkit-animation: blooming-leaf-left var(--fl-speed) 2.4s backwards;
+          animation: blooming-leaf-left var(--fl-speed) 2.4s backwards;
+}
 .flower--2 {
   left: 50%;
   transform: rotate(20deg);
@@ -193,6 +295,22 @@ body {
   -webkit-animation: blooming-leaf-left var(--fl-speed) 1.3s backwards;
           animation: blooming-leaf-left var(--fl-speed) 1.3s backwards;
 }
+.flower--2 .flower__line__leaf--5 {
+  -webkit-animation: blooming-leaf-right var(--fl-speed) 2.1s backwards;
+          animation: blooming-leaf-right var(--fl-speed) 2.1s backwards;
+}
+.flower--2 .flower__line__leaf--6 {
+  -webkit-animation: blooming-leaf-left var(--fl-speed) 2.3s backwards;
+          animation: blooming-leaf-left var(--fl-speed) 2.3s backwards;
+}
+.flower--2 .flower__line__leaf--7 {
+  -webkit-animation: blooming-leaf-right var(--fl-speed) 2.5s backwards;
+          animation: blooming-leaf-right var(--fl-speed) 2.5s backwards;
+}
+.flower--2 .flower__line__leaf--8 {
+  -webkit-animation: blooming-leaf-left var(--fl-speed) 2.7s backwards;
+          animation: blooming-leaf-left var(--fl-speed) 2.7s backwards;
+}
 .flower--3 {
   left: 50%;
   transform: rotate(-15deg);
@@ -218,6 +336,22 @@ body {
 .flower--3 .flower__line__leaf--4 {
   -webkit-animation: blooming-leaf-left var(--fl-speed) 1.9s backwards;
           animation: blooming-leaf-left var(--fl-speed) 1.9s backwards;
+}
+.flower--3 .flower__line__leaf--5 {
+  -webkit-animation: blooming-leaf-right var(--fl-speed) 2.7s backwards;
+          animation: blooming-leaf-right var(--fl-speed) 2.7s backwards;
+}
+.flower--3 .flower__line__leaf--6 {
+  -webkit-animation: blooming-leaf-left var(--fl-speed) 2.9s backwards;
+          animation: blooming-leaf-left var(--fl-speed) 2.9s backwards;
+}
+.flower--3 .flower__line__leaf--7 {
+  -webkit-animation: blooming-leaf-right var(--fl-speed) 3.1s backwards;
+          animation: blooming-leaf-right var(--fl-speed) 3.1s backwards;
+}
+.flower--3 .flower__line__leaf--8 {
+  -webkit-animation: blooming-leaf-left var(--fl-speed) 3.3s backwards;
+          animation: blooming-leaf-left var(--fl-speed) 3.3s backwards;
 }
 .flower__leafs {
   position: relative;
@@ -341,34 +475,43 @@ body {
   background-image: linear-gradient(to top, rgba(20, 122, 20, 0.4), #1aaa15);
 }
 .flower__line__leaf--1 {
+  top: 18%;
   transform: rotate(70deg) rotateY(30deg);
 }
 .flower__line__leaf--2 {
-  top: 45%;
+  top: 36%;
   transform: rotate(70deg) rotateY(30deg);
 }
-.flower__line__leaf--3, .flower__line__leaf--4, .flower__line__leaf--6 {
+.flower__line__leaf--3, .flower__line__leaf--4, .flower__line__leaf--6, .flower__line__leaf--8 {
   border-top-right-radius: 0;
   border-bottom-left-radius: 0;
   border-top-left-radius: var(--h);
   border-bottom-right-radius: var(--h);
   left: -460%;
   top: 12%;
+  transform-origin: right;
   transform: rotate(-70deg) rotateY(30deg);
 }
 .flower__line__leaf--4 {
-  top: 40%;
+  top: 30%;
 }
 .flower__line__leaf--5 {
-  top: 0;
+  top: 54%;
   transform-origin: left;
-  transform: rotate(70deg) rotateY(30deg) scale(0.6);
+  transform: rotate(70deg) rotateY(30deg) scale(0.9);
 }
 .flower__line__leaf--6 {
-  top: -2%;
-  left: -450%;
-  transform-origin: right;
-  transform: rotate(-70deg) rotateY(30deg) scale(0.6);
+  top: 48%;
+  transform: rotate(-70deg) rotateY(30deg) scale(0.9);
+}
+.flower__line__leaf--7 {
+  top: 72%;
+  transform-origin: left;
+  transform: rotate(70deg) rotateY(30deg) scale(0.8);
+}
+.flower__line__leaf--8 {
+  top: 66%;
+  transform: rotate(-70deg) rotateY(30deg) scale(0.8);
 }
 .flower__light {
   position: absolute;
@@ -635,14 +778,7 @@ body {
   }
 }
 .flower__grass__overlay {
-  position: absolute;
-  top: -10%;
-  right: 0%;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  filter: blur(1.5vmin);
-  z-index: 100;
+  display: none !important;
 }
 .flower__g-long {
   --w: 2vmin;
@@ -704,8 +840,10 @@ body {
   height: 50vmin;
   border-top-left-radius: 100%;
   border-left: 2vmin solid #00b815;
-  background-image: linear-gradient(to bottom, transparent, var(--dark-color) 60%);
+  background: transparent !important;
+  background-image: none !important;
   -webkit-mask-image: linear-gradient(to top, transparent 30%, #00b815 60%);
+  mask-image: linear-gradient(to top, transparent 30%, #00b815 60%);
 }
 .flower__g-right--1 {
   -webkit-animation: flower-g-right-ans 2.5s linear infinite;
@@ -721,6 +859,8 @@ body {
   height: 75vmin;
   filter: blur(0.3vmin);
   opacity: 0.8;
+  background: transparent !important;
+  background-image: none !important;
 }
 @-webkit-keyframes flower-g-right-ans {
   0%, 100% {
@@ -891,7 +1031,7 @@ body {
   height: 10vmin;
   border-radius: 100% 0% 0% 100%/100% 100% 0% 0%;
   box-shadow: inset 0 2px 1vmin hsla(184deg, 97%, 58%, 0.2);
-  background-image: linear-gradient(to bottom left, transparent, var(--dark-color)), 
+  background-image: linear-gradient(to bottom left, transparent, rgba(4, 50, 12, 0.7)), 
   linear-gradient(to bottom right, #00b815 50%, transparent 50%, transparent);
   -webkit-mask-image: linear-gradient(to bottom right, #00b815 50%, transparent 50%, transparent);
   mask-image: linear-gradient(to bottom right, #00b815 50%, transparent 50%, transparent);
@@ -938,7 +1078,7 @@ body {
   height: 10vmin;
   border-radius: 100% 0% 0% 100%/100% 100% 0% 0%;
   box-shadow: inset 0 2px 1vmin hsla(184deg, 97%, 58%, 0.2);
-  background-image: linear-gradient(to bottom left, transparent, var(--dark-color) 98%), 
+  background-image: linear-gradient(to bottom left, transparent, rgba(4, 50, 12, 0.7) 98%), 
   linear-gradient(to bottom right, #00b815 45%, transparent 50%, transparent);
   -webkit-mask-image: linear-gradient(135deg, #00b815 40%, transparent 50%, transparent);
 }
@@ -1136,7 +1276,8 @@ body {
   height: var(--h);
   border-top-left-radius: 100%;
   border-left: 2vmin solid var(--c);
-  -webkit-mask-image: linear-gradient(to top, transparent 20%, var(--dark-color));
+  -webkit-mask-image: linear-gradient(to top, transparent 20%, #00b815);
+  mask-image: linear-gradient(to top, transparent 20%, #00b815);
   transform-origin: bottom center;
 }
 .long-g .leaf--0 {
@@ -1536,25 +1677,142 @@ body {
   }
 }
 
+/* --- ESCENARIO DEL PLANETA Y JARDÍN INFINITO --- */
+.planet-viewport {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  z-index: 10;
+  pointer-events: none;
+  transform-origin: bottom center;
+  transition: transform 0.2s ease-out;
+}
+
+/* Línea de horizonte curvada del planeta con resplandor suave */
+.planet-curve-line {
+  position: absolute;
+  left: -1200px;
+  bottom: -2220px;
+  width: 2400px;
+  height: 2400px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 2%, rgba(2, 45, 12, 0.95) 0%, rgba(1, 20, 5, 0.98) 18%, #000 60%);
+  border-top: 1.5px solid rgba(100, 255, 140, 0.4);
+  box-shadow: 0 -10px 50px rgba(0, 255, 100, 0.2), inset 0 10px 40px rgba(0, 255, 100, 0.1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.garden-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.garden-layer--bg {
+  z-index: 2;
+}
+
+.garden-layer--mid {
+  z-index: 3;
+}
+
+.garden-layer--fg {
+  z-index: 10;
+}
+
+/* Racimos de flores en el planeta */
+.flower-cluster {
+  position: absolute;
+  bottom: 12vh;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-origin: bottom center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cluster--bg {
+  filter: blur(2.5px);
+  opacity: 0.55;
+}
+
+.cluster--mid {
+  filter: blur(1px);
+  opacity: 0.8;
+}
+
+.cluster--fg {
+  filter: none;
+  opacity: 1;
+}
+
+/* Indicador sutil para invitar a explorar el planeta */
+.scroll-hint {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(252, 231, 0, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(252, 231, 0, 0.2);
+  color: #fff9b0;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(12px, 3.5vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  padding: 8px 22px;
+  border-radius: 30px;
+  z-index: 1500;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  white-space: nowrap;
+  max-width: 90%;
+  text-align: center;
+}
+
+.scroll-hint.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.scroll-hint.fade-out {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-10px);
+}
+
 /* ==============================================
    ADAPTACIÓN RESPONSIVA PARA DISPOSITIVOS MÓVILES
    ============================================== */
 @media (max-width: 768px) {
-  .flowers {
-    /* Escala y posición óptimas para teléfonos móviles */
-    transform: scale(0.85); 
-    transform-origin: bottom center;
-    bottom: max(14vh, 105px);
+  .planet-curve-line {
+    left: -700px;
+    bottom: -1150px;
+    width: 1400px;
+    height: 1400px;
+  }
+
+  .flowers,
+  .flower-cluster {
+    bottom: max(22vh, 160px);
   }
   
   .message {
-    font-size: clamp(16px, 4.2vw, 20px);
+    font-size: clamp(14px, 3.8vw, 17px);
     width: max-content;
-    max-width: 88%;
+    max-width: 90%;
     text-align: center;
-    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     height: auto;
-    padding: 12px 26px;
+    padding: 12px 22px;
     border-radius: 50px;
     box-shadow: 0 4px 18px rgba(252, 231, 0, 0.4);
   }
@@ -1563,18 +1821,20 @@ body {
     font-size: clamp(17px, 4.8vw, 20px);
     padding: 14px 30px;
   }
+
+  }
 }
 
 /* Pantallas pequeñas (ej. teléfonos de 360px o menos) */
 @media (max-width: 380px) {
-  .flowers {
-    transform: scale(0.78);
-    bottom: max(14vh, 95px);
+  .flowers,
+  .flower-cluster {
+    bottom: max(20vh, 150px);
   }
   
   .message {
-    font-size: 15px;
-    padding: 10px 20px;
+    font-size: 13.5px;
+    padding: 10px 18px;
   }
 
   .btn-start {
@@ -1585,14 +1845,14 @@ body {
 
 /* Teléfonos de poca altura o en modo apaisado */
 @media (max-height: 700px) and (max-width: 768px) {
-  .flowers {
-    transform: scale(0.72);
-    bottom: max(12vh, 85px);
+  .flowers,
+  .flower-cluster {
+    bottom: max(16vh, 120px);
   }
 
   .message {
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    padding: 10px 20px;
-    font-size: 15px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    padding: 9px 18px;
+    font-size: 13.5px;
   }
 }
